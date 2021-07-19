@@ -15,6 +15,23 @@ const hbs = require("hbs");
 
 const app = express();
 
+const session = require("express-session");
+
+app.use(
+  session({
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+      sameSite: true, //frontend backend both run on localhost
+      httpOnly: true, //we are not using https
+      maxAge: 60000, //session time
+    },
+    rolling: true,
+  })
+);
+
+
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require("./config")(app);
 
@@ -30,5 +47,8 @@ app.use("/", index);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
+
+const auth = require("./routes/auth-routes");
+app.use("/api", auth);
 
 module.exports = app;
