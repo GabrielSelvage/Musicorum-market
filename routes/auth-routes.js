@@ -83,4 +83,22 @@ router.get("/loggedin", (req, res) => {
   }
 });
 
+router.put("/user/:id", async (req, res) => {
+  try {
+    const { username, email, password,  name } = req.body;
+    const saltRounds = 10;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    await User.findByIdAndUpdate(req.params.id, {
+      username,
+      password: hashedPassword,
+      email,
+      name,
+    });
+    res.status(200).json(`id ${req.params.id} was updated`);
+  } catch (e) {
+    res.status(500).json({ message: `error occurred ${e}` });
+  }
+});
+
 module.exports = router;
