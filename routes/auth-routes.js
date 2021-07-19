@@ -3,6 +3,10 @@ const router = express.Router();
 const User = require("../models/User.model");
 const bcrypt = require("bcryptjs");
 
+router.get("/signup", (req, res) => {
+  res.render("error");
+})
+
 router.post("/signup", async (req, res) => {
   const { username, password, email, name} = req.body;
 
