@@ -36,7 +36,7 @@ app.use(
 require("./config")(app);
 
 // default value for title local
-const projectName = "Musicorum-market";
+const projectName = "Musicorum-market-server";
 const capitalized = (string) => string[0].toUpperCase() + string.slice(1).toLowerCase();
 
 app.locals.title = `${capitalized(projectName)} created with IronLauncher`;

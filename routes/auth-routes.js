@@ -3,16 +3,11 @@ const router = express.Router();
 const User = require("../models/User.model");
 const bcrypt = require("bcryptjs");
 
-router.get("/signup", (req, res) => {
-  res.render("error");
-})
-
 router.post("/signup", async (req, res) => {
-  const { username, password, email, name} = req.body;
+  const { email, password, name } = req.body;
 
-  //check if username and password are filled in
-  if (username === "" || password === "") {
-    res.status(400).json({ message: "Fill username and password" });
+  if (email === "" || password === "" || name === "") {
+    res.status(400).json({ message: "Fill in all the fields" });
     return;
   }
 
@@ -23,34 +18,33 @@ router.post("/signup", async (req, res) => {
   //   return;
   // }
 
-  //check if username already exists
-  const user = await User.findOne({ username });
+  //check if email already exists
+  const user = await User.findOne({ email });
   if (user !== null) {
     res.status(400).json({ message: "Username already exists" });
     return;
-  }
+  };
 
   const saltRounds = 10;
   const salt = bcrypt.genSaltSync(saltRounds);
   const hashedPassword = bcrypt.hashSync(password, salt);
   const newUser = await User.create({
-    username,
-    password: hashedPassword,
     email,
+    password: hashedPassword,
     name,
   });
   res.status(200).json(newUser);
 });
 
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username || !password) {
-    res.status(400).json({ message: "Fill username and password" });
+  if (!password || !email) {
+    res.status(400).json({ message: "Fill in all the fields" });
     return;
   }
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ email });
   if (!user) {
     res.status(401).json({ message: "Invalid login" });
     return;
@@ -79,18 +73,18 @@ router.get("/loggedin", (req, res) => {
     res.status(200).json(req.session.currentUser);
     return;
   } else {
-    res.status(401).json({ message: "user logged out" });
+    res.status(200).json({});
   }
 });
 
 router.put("/user/:id", async (req, res) => {
   try {
-    const { username, email, password,  name } = req.body;
+    const { email, password, name } = req.body;
     const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
     const hashedPassword = bcrypt.hashSync(password, salt);
     await User.findByIdAndUpdate(req.params.id, {
-      username,
+      email,
       password: hashedPassword,
       email,
       name,

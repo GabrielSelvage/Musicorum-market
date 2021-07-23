@@ -1,7 +1,7 @@
 document.addEventListener(
   "DOMContentLoaded",
   () => {
-    console.log("Musicorum-market JS imported successfully!");
+    console.log("Musicorum-market-server JS imported successfully!");
   },
   false
 );
