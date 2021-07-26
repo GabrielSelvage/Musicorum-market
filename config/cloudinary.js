@@ -15,7 +15,8 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "lessons",
-    allowed_formats: ["png", "jpg"],
+    resource_type: "auto",
+    allowed_formats: ["png", "jpg", "mp4"],
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);

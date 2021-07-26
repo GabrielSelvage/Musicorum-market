@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User.model");
-const fileUpload = require("../config/cloudinary");
 
 function requireLogin(req, res, next) {
   if (req.session.currentUser) {
@@ -12,14 +11,7 @@ function requireLogin(req, res, next) {
   }
 }
 
-//Upload image cloudinary
-router.post("/upload", fileUpload.single("image"), (req, res) => {
-  try {
-    res.status(200).json({fileUrl: req.file.path});
-  } catch (e) {
-    res.status(500).json({message: `error occurred ${e}`});
-  }
-});
+
 
 //Get all projects
 router.get("/projects", async (req, res) => {
