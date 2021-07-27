@@ -4,7 +4,7 @@ const fileUpload = require("../config/cloudinary");
 
 //Create Lessons
 router.post("/add-lesson", async (req, res) => {
-    const { title, description, level, price, teacher, tags, imagePreviewUrl, videoUrl } = req.body;
+    const { title, description, level, price, teacher, tags, imagePreviewUrl, videoUrl, course } = req.body;
     if (!title || !description) {
         res.status(400).json({ message: "missing fields" });
         return;
@@ -15,6 +15,7 @@ router.post("/add-lesson", async (req, res) => {
             description,
             level,
             price,
+            course,
             teacher,
             tags,
             imagePreviewUrl,

@@ -16,7 +16,7 @@ const lessonSchema = new Schema({
     imagePreviewUrl: {
         type: String,
     },
-    class: {
+    course: {
         type: String,
     },
     level: {
