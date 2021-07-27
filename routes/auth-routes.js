@@ -77,22 +77,38 @@ router.get("/loggedin", (req, res) => {
   }
 });
 
-router.put("/user/:id", async (req, res) => {
+
+router.put("/profile/:id", async (req, res) => {
   try {
-    const { email, password, name } = req.body;
-    const saltRounds = 10;
-    const salt = bcrypt.genSaltSync(saltRounds);
-    const hashedPassword = bcrypt.hashSync(password, salt);
+    const { description, name, imageUrl } = req.body;
     await User.findByIdAndUpdate(req.params.id, {
-      email,
-      password: hashedPassword,
-      email,
+      description,
       name,
+      imageUrl,
     });
     res.status(200).json(`id ${req.params.id} was updated`);
   } catch (e) {
     res.status(500).json({ message: `error occurred ${e}` });
   }
+});
+router.put("/account-settings/:id", async (req, res) => {
+  const { email, password } = req.body;
+  const saltRounds = 10;
+  const salt = bcrypt.genSaltSync(saltRounds);
+  const hashedPassword = bcrypt.hashSync(password, salt);
+  try {
+    await User.findByIdAndUpdate(req.params.id, {
+      email,
+      password: hashedPassword,
+    });
+    res.status(200).json(`id ${req.params.id} was updated`);
+  } catch (e) {
+    res.status(500).json({ message: `error occurred ${e}` });
+  }
+});
+router.get("/profile", async (req, res) => {
+  const currentUser = await User.findById(req.session.currentUser._id);
+  res.status(200).json(currentUser);
 });
 
 module.exports = router;

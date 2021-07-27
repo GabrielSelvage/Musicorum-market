@@ -24,7 +24,7 @@ const userSchema = new Schema({
     default: "No description added"
   },
   role: String,
-  myClasses: {
+  myLessons: {
     type: Array,
     default: []
   },

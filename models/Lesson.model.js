@@ -16,8 +16,8 @@ const lessonSchema = new Schema({
     imagePreviewUrl: {
         type: String,
     },
-    course: {
-        type: Array,
+    class: {
+        type: String,
     },
     level: {
         type: String,
@@ -26,9 +26,10 @@ const lessonSchema = new Schema({
         type: Array,
     },
     teacher: {
-        type: String,
-    }
-});
+        type: Schema.Types.ObjectId,
+        ref: "User",
+    },
+}, { timestamps: true });
 
 const Lesson = model("Lesson", lessonSchema);
 
