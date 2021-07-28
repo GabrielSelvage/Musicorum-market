@@ -36,4 +36,13 @@ router.post("/upload", fileUpload.single("file"), (req, res) => {
     }
 });
 
+router.get("/lessons", async (req, res) => {
+    try {
+        const allLessons = await Lesson.find();
+        res.status(200).json(allLessons);
+    } catch (e) {
+        res.status(500).json({ message: `error occurred: ${e}` })
+    }
+});
+
 module.exports = router;
