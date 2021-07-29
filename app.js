@@ -16,6 +16,7 @@ const hbs = require("hbs");
 const app = express();
 
 const session = require("express-session");
+app.set("trust proxy", 1);
 
 app.use(
   session({
@@ -23,8 +24,9 @@ app.use(
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
     cookie: {
-      sameSite: true, //frontend backend both run on localhost
-      httpOnly: true, //we are not using https
+      sameSite: "none",//sameSite: true, //frontend backend both run on localhost
+      httpOnly: false,//httpOnly: true, //we are not using https
+      secure: true,
       maxAge: 60000, //session time
     },
     rolling: true,

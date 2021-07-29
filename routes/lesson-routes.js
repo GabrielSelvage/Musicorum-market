@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Lesson = require("../models/Lesson.model");
 const fileUpload = require("../config/cloudinary");
+let ObjectId = require('mongodb').ObjectID;
 
 //Create Lessons
 router.post("/add-lesson", async (req, res) => {
@@ -44,5 +45,24 @@ router.get("/lessons", async (req, res) => {
         res.status(500).json({ message: `error occurred: ${e}` })
     }
 });
+
+router.get("/lesson/:userId", async (req, res) => {
+    try {
+        const Lessons = await Lesson.find({ "teacher": ObjectId(req.params.userId) });
+        res.status(200).json(Lessons);
+    } catch (e) {
+        res.status(500).json({ message: `error occurred: ${e}` })
+    }
+});
+
+router.get("/lesson/:id", async (req, res) => {
+    try {
+      const lesson = await Project.findById(req.params.id);
+      res.status(200).json(lesson);
+    } catch (e) {
+      res.status(500).json({ message: `error occurred ${e}` });
+    }
+  });
+
 
 module.exports = router;
