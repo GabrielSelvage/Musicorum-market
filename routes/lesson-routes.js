@@ -46,23 +46,25 @@ router.get("/lessons", async (req, res) => {
     }
 });
 
-router.get("/lesson/:userId", async (req, res) => {
+router.get("/mylessons", async (req, res) => {
     try {
-        const Lessons = await Lesson.find({ "teacher": ObjectId(req.params.userId) });
-        res.status(200).json(Lessons);
+        const lessons = await Lesson.find({ "teacher": req.session.currentUser });
+        res.status(200).json(lessons);
     } catch (e) {
         res.status(500).json({ message: `error occurred: ${e}` })
     }
 });
 
-router.get("/lesson/:id", async (req, res) => {
+  router.get("/lesson-details/:lessonId", async (req, res) => {
     try {
-      const lesson = await Project.findById(req.params.id);
-      res.status(200).json(lesson);
+        const Lessons = await Lesson
+            .findById(req.params.lessonId)
+            .populate("teacher");;
+        res.status(200).json(Lessons);
     } catch (e) {
-      res.status(500).json({ message: `error occurred ${e}` });
+        res.status(500).json({ message: `error occurred: ${e}` })
     }
-  });
+});
 
 
 module.exports = router;
